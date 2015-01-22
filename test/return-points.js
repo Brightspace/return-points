@@ -5,10 +5,16 @@ var expect = require('chai').expect,
 	sessionStorage = require('./support/sessionStorage');
 
 var invalid = [undefined,null,''];
+var defaultUrl = 'http://default.com/url'
 
 describe('return-points', function() {
 
 	beforeEach( function() {
+		global.document = {
+			location: {
+				href: defaultUrl
+			}
+		};
 		global.window = {
 			sessionStorage: sessionStorage
 		};
@@ -23,7 +29,7 @@ describe('return-points', function() {
 		invalid.forEach(function(key) {
 			it('should throw TypeError on \'' + key + '\' key', function() {
 				expect( function() {
-					returnPoints.get(key);
+					returnPoints.get(key,'default');
 				} ).to.throw(TypeError);
 			});
 		});
@@ -36,13 +42,13 @@ describe('return-points', function() {
 		it('should return value that was set', function() {
 			returnPoints.set('myKey','myVal');
 			returnPoints.set('key2','val2');
-			var val = returnPoints.get('myKey');
+			var val = returnPoints.get('myKey','default');
 			expect(val).to.equal('myVal');
 		});
 
 		it('should remove value after it is asked for', function() {
 			returnPoints.set('myKey', 'myVal');
-			returnPoints.get('myKey');
+			returnPoints.get('myKey', 'default');
 			var val = returnPoints.get('myKey', 'default');
 			expect(val).to.equal('default');
 		});
@@ -50,7 +56,7 @@ describe('return-points', function() {
 		it('should return last added value when added multiple times', function() {
 			returnPoints.set('myKey','val1');
 			returnPoints.set('myKey','val2');
-			var val = returnPoints.get('myKey');
+			var val = returnPoints.get('myKey','default');
 			expect(val).to.equal('val2');
 		});
 
@@ -66,7 +72,7 @@ describe('return-points', function() {
 			});
 		});
 
-		invalid.forEach(function(val) {
+		[null,''].forEach(function(val) {
 			it('should throw TypeError on \'' + val + '\' val', function() {
 				expect( function() {
 					returnPoints.set('key',val);
@@ -74,9 +80,15 @@ describe('return-points', function() {
 			});
 		});
 
+		it('should default to current url if none specified', function() {
+			returnPoints.set('key');
+			var val = returnPoints.get('key', 'default');
+			expect(val).to.equal(defaultUrl);
+		});
+
 		it('should set value specified', function() {
 			returnPoints.set('key','val');
-			var val = returnPoints.get('key');
+			var val = returnPoints.get('key', 'default');
 			expect(val).to.equal('val');
 		});
 

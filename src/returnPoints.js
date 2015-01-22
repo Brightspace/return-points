@@ -7,6 +7,7 @@ module.exports = {
 	get: function( key, defaultLocation ) {
 
 		this._validateParam( key, 'key' );
+		this._validateParam( defaultLocation, 'defaultLocation' );
 
 		var me = this;
 		var data = me._read();
@@ -31,6 +32,10 @@ module.exports = {
 	},
 
 	set: function( key, location ) {
+
+		if( location === undefined ) {
+			location = document.location.href;
+		}
 
 		this._validateParam( key, 'key' );
 		this._validateParam( location, 'location' );

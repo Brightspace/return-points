@@ -1,6 +1,6 @@
 {
   "name": "return-points",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A set of APIs to get/set a URL to \"return to\" after launching into a workflow that may have multiple entry points",
   "main": "src/returnPoints.js",
   "scripts": {
