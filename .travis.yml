@@ -1,14 +1,14 @@
 language: node_js
 node_js:
-- '0.10'
+  - '0.10'
 sudo: false
 after_success:
-- npm run report-coverage
+  - npm run report-coverage
 deploy:
-  provider: npm
-  email: d2ltravisdeploy@d2l.com
-  api_key:
-    secure: V2V9tgKJehh57WIA6n/O1NhhxL2HmERtEVnrG8MoK0Ku3IfPV4Ab0HtCyqGi9NzdeeI4DStSU+/nnrD+TstEWx1B7AVzE1fOWtkgocZao+HsY7lGO/oCNa1Fx9HtcGqY7mHGksiX+eawP2o+I55nSWRxWfpJXOkPnvzhTlJ1m+k=
+  provider: script
+  script: echo "npm credentials were revoked on 2018-07-12. We regenerated many
+    credentials, but this repository had no changes in at least 18 months and
+    was skipped. Reconfigure npm deployments. -omsmith"; exit 1
   on:
     tags: true
     repo: Brightspace/return-points
